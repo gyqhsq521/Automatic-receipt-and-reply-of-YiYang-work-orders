@@ -26,11 +26,26 @@ def new_tab(driver,data_list_url,i):
     url = "http://10.93.19.175:8091/wyeoms/sheet/centralfaultprocess/{}".format(data_list_url[i-1])
     driver.get(url)
 
-#故障预判
-def fault_pre(driver,data_list_url,h):
-    #在新标签页打开要回复的工单
-    new_tab(driver,data_list_url,h)
+#阶段性回复
+def stage_receive(driver):
+    jz = WebDriverWait(driver,3,0.3).until(EC.presence_of_element_located((By.XPATH,'//*[@id="progressDesc"]')))
+    reply_select(driver,'//*[@id="remark"]','动力环境故障')        
+    
+    #进展描述填“可回复”        
+    jz.send_keys("可回复")
+    
+    #点击提交
+    tj = driver.find_element(By.XPATH,'//*[@id="method.save"]')
+    tj.click()
 
+    #等待受理完成
+    WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,'/html/body/div/div/div/div/h1')))
+               
+    #再次打开工单页面    
+    driver.get(url)      
+    
+#故障预判
+def fault_pre(driver):
     sm = WebDriverWait(driver,3,0.3).until(EC.presence_of_element_located((By.XPATH,'//*[@id="remark"]')))
     reply_select(driver,'//*[@id="isDisposal"]','否')
 
@@ -60,23 +75,7 @@ def reply_order(driver,data_list_url,i,Type,district):
 
     #若有阶段性回复，则进行阶段性回复
     try:
-        jz = WebDriverWait(driver,3,0.3).until(EC.presence_of_element_located((By.XPATH,'//*[@id="progressDesc"]')))
-
-        reply_select(driver,'//*[@id="remark"]','动力环境故障')        
-        
-        #进展描述填“可回复”        
-        jz.send_keys("可回复")
-        
-        #点击提交
-        tj = driver.find_element(By.XPATH,'//*[@id="method.save"]')
-        tj.click()
-
-        #等待受理完成
-        WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,'/html/body/div/div/div/div/h1')))
-                   
-        #再次打开工单页面    
-        driver.get(url)            
-
+        stage_receive(driver)
     except Exception:
         pass
     
@@ -317,13 +316,28 @@ def reply_gongdan(username,password,frequence,district,mode_type):
             for h in range(1,order_num+1):
                 if data_list_name[h-1] != ''and data_list_personnel[h-1] == '总部自动派单':
                     try:
+                        #在新标签页打开要回复的工单
+                        new_tab(driver,data_list_url,h)
+                        
                         #故障预判
-                        fault_pre(driver,data_list_url,h)
-                    except Exception as l1:
+                        fault_pre(driver)
+                        
+                    except Exception:
+                        try:                          
+                            #如果不是故障预判页面，有可能是阶段反馈页面
+                            stage_receive(driver)
+
+                            #故障预判
+                            fault_pre(driver)
+                            
+                        except Exception:
+                            pass
+                        
                         #关闭标签页
                         driver.close()   
                         #切回当前标签页，使当前标签页作为可操作对象
                         driver.switch_to.window(driver.window_handles[-1])
+                        
                 elif h == order_num:
                     driver.switch_to.window(driver.window_handles[-1])
 
