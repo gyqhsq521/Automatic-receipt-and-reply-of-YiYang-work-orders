@@ -45,7 +45,7 @@ def stage_receive(driver):
     driver.get(url)   
 
 #故障预判
-def fault_pre(driver,data_list_url,h): 
+def fault_pre(driver): 
     sm = WebDriverWait(driver,3,0.3).until(EC.presence_of_element_located((By.XPATH,'//*[@id="remark"]')))
     reply_select(driver,'//*[@id="isDisposal"]','否')
 
