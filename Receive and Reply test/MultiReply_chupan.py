@@ -322,7 +322,7 @@ def reply_gongdan(username,password,frequence,district):
                         #故障预判
                         fault_pre(driver)
                         
-                    except Exception:
+                    except Exception as z11:
                         try:
                             #如果不是故障预判页面，有可能是阶段反馈页面
                             stage_receive(driver)
@@ -333,7 +333,7 @@ def reply_gongdan(username,password,frequence,district):
                             #故障预判
                             fault_pre(driver)
                             
-                        except Exception:
+                        except Exception as z12:
                             pass
                         
                         #关闭标签页
@@ -392,11 +392,10 @@ def reply_gongdan(username,password,frequence,district):
                 #确认回单前当前时间
                 c_time = datetime.now().replace(microsecond=0)
 
-                if data_list_name[i-1] != '' and data_list_personnel[h-1] == '总部自动派单' and data_list_personnel[h-1] == '省分自动派单':                     
+                if data_list_name[i-1] != '' and data_list_personnel[h-1] != '总部自动派单' and data_list_personnel[h-1] != '省分自动派单':                     
 
                     #回复超过派单时间2个小时的工单
                     if (c_time - data_list_time[i-1]).total_seconds() >= 7200.0:
-                        print(f"正在回复第{i}个工单")
                         try:
                             #回复无线网工单
                             if data_list_type[i-1] == '无线网':
@@ -545,7 +544,7 @@ if __name__ == '__main__':
 ##    t("haolinli","Haolinli*147#",10,"镇巴")
     t("tangyong","Tangyong*147#",10,"勉县")
 ##    t("zhengling","Zhengling*147#",30,"宁强") 
-##    t("wangyong","Wangyong*123#",10,"大河坎")
+    t("wangyong","Wangyong*123#",10,"大河坎")
 ##    t("yuanhuaizhi","Yuanhuaizhi*147#",10,"略阳")
 ##    t("wuyongchao","Wuyongchao*147#",10,"汉台")
 ##    t("zhoujie","Zhoujie*147#",10,"西乡")
