@@ -39,10 +39,7 @@ def stage_receive(driver):
     tj.click()
 
     #等待受理完成
-    WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,'/html/body/div/div/div/div/h1')))
-               
-    #再次打开工单页面    
-    driver.get(url)      
+    WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,'/html/body/div/div/div/div/h1')))                  
     
 #故障预判
 def fault_pre(driver):
@@ -314,7 +311,7 @@ def reply_gongdan(username,password,frequence,district,mode_type):
             
             #完成每个已接工单的故障预判
             for h in range(1,order_num+1):
-                if data_list_name[h-1] != ''and data_list_personnel[h-1] == '总部自动派单':
+                if data_list_name[h-1] != ''and (data_list_personnel[h-1] == '总部自动派单' or data_list_personnel[h-1] == '省分自动派单'):
                     try:
                         #在新标签页打开要回复的工单
                         new_tab(driver,data_list_url,h)
@@ -327,6 +324,9 @@ def reply_gongdan(username,password,frequence,district,mode_type):
                             #如果不是故障预判页面，有可能是阶段反馈页面
                             stage_receive(driver)
 
+                            #再次打开工单页面    
+                            driver.get(f"http://10.93.19.175:8091/wyeoms/sheet/centralfaultprocess/{data_list_url[h-1]}")
+                            
                             #故障预判
                             fault_pre(driver)
                             
@@ -388,7 +388,7 @@ def reply_gongdan(username,password,frequence,district,mode_type):
                 #确认回单前当前时间
                 c_time = datetime.now().replace(microsecond=0)
 
-                if data_list_name[i-1] != ''and data_list_personnel[i-1] != '总部自动派单':
+                if data_list_name[i-1] != ''and data_list_personnel[h-1] == '总部自动派单' and data_list_personnel[h-1] == '省分自动派单':
                 
                     #回复超过派单时间2个小时的工单
                     if (c_time - data_list_time[i-1]).total_seconds() >= 7200.0:        
@@ -489,7 +489,8 @@ def reply_gongdan(username,password,frequence,district,mode_type):
                                     reply_select(driver,'//*[@id="faultCause"]','模块故障')
                                 except Exception:
                                     #回复结构为是否现场处理
-                                    reply_select(driver,'//*[@id="isDisposal"]','否')      
+                                    reply_select(driver,'//*[@id="isDisposal"]','否')
+                                driver.find_element(By.XPATH,'//*[@id="remark"]').send_keys("市电停电")
 
                                 try:
                                     #选择子告警手动清除时间为当前时间
