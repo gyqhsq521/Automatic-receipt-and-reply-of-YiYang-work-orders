@@ -253,8 +253,8 @@ def reply_gongdan(username,password,frequence,district):
             start_time = datetime.now()
 
             #参数填为无浏览器窗口运行
-##            driver = webdriver.Firefox(options = f_options)
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(options = f_options)
+##            driver = webdriver.Firefox()
             url="http://10.93.19.175:8091/wyeoms/"
 
             #打开指定网址的网页
@@ -314,9 +314,7 @@ def reply_gongdan(username,password,frequence,district):
 
             #完成每个已接工单的故障预判
             for h in range(1,order_num+1):
-                print(f'第{h}步')
                 if data_list_name[h-1] != ''and (data_list_personnel[h-1] == '总部自动派单' or data_list_personnel[h-1] == '省分自动派单'):
-                    print(f'第{h}步,进入故障预判')
                     try:
                         #在新标签页打开要回复的工单
                         new_tab(driver,data_list_url,h)
@@ -324,8 +322,7 @@ def reply_gongdan(username,password,frequence,district):
                         #故障预判
                         fault_pre(driver)
                         
-                    except Exception as z11:
-                        print(f"错误z11：{z11}")
+                    except Exception:
                         try:
                             #如果不是故障预判页面，有可能是阶段反馈页面
                             stage_receive(driver)
@@ -336,8 +333,7 @@ def reply_gongdan(username,password,frequence,district):
                             #故障预判
                             fault_pre(driver)
                             
-                        except Exception as z12:
-                            print(f'错误z12:{z12}')
+                        except Exception:
                             pass
                         
                         #关闭标签页
