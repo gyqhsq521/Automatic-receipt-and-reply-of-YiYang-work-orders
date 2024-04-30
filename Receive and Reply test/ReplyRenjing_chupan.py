@@ -253,8 +253,8 @@ def reply_gongdan(username,password,frequence,district):
             start_time = datetime.now()
 
             #参数填为无浏览器窗口运行
-##            driver = webdriver.Firefox(options = f_options)
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(options = f_options)
+##            driver = webdriver.Firefox()
             url="http://10.93.19.175:8091/wyeoms/"
 
             #打开指定网址的网页
