@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import re
 from selenium.webdriver.common.by import By
 import requests
@@ -19,7 +19,7 @@ def get_html_str(pagesource):
     return html_str
 
 
-#获取工单页面第3列的数据
+#获取工单页面第3列“工单流水号”的数据
 def get_url(html_str):
     """
     定义一个函数, 新建一个变量pdata_list初始值为空列表（也可以叫空数组）， 在网页源码中匹配出每一行的内容
@@ -44,22 +44,25 @@ def get_url(html_str):
         print(e)
     return data_list
 
-#获取工单页面第4列的数据
-def get_subject(html_str):
+
+#获取工单页面第6列“派单时间”的数据
+def get_time(html_str): 
     data_list = []
     try:
         option = html_str.xpath('/html/body/div[4]/div/div/table/tbody/tr')
         for op in option:
             try:
-                col4 = re.findall('衍生|铁塔',op.xpath("./td[4]/text()")[0])[0]               
+                #将取到的时间字符串改为时间格式
+                col8 = datetime.strptime(re.findall('\d{4}-\d{1,25}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}',op.xpath("./td[6]/text()")[0])[0],'%Y-%m-%d %H:%M:%S')
             except Exception:
-                col4 = ""
-            data_list.append(col4)
+                col8 = ""
+            data_list.append(col8)
     except Exception as e:
         print(e)
     return data_list
+    
 
-#获取工单页面第8列的数据
+#获取工单页面第8列“专业”的数据
 def get_type(html_str):
     data_list = []
     try:
@@ -75,7 +78,7 @@ def get_type(html_str):
         print(e)
     return data_list
 
-#获取接工单页面第11列的数据
+#获取接工单页面第11列“任务所有者”数据
 def get_data(html_str):
     """
     定义一个函数, 新建一个变量data_list初始值为空列表（也可以叫空数组）， 在网页源码中匹配出每一行的内容
@@ -97,7 +100,22 @@ def get_data(html_str):
         print(e)
     return data_list
 
-#获取工单页面第14列的数据
+#获取工单页面第13列“上一级处理人员”数据
+def get_personnel(html_str):
+    data_list = []
+    try:
+        option = html_str.xpath('/html/body/div[4]/div/div/table/tbody/tr')
+        for op in option:        
+            try:
+                col14 = re.findall('[\\u4e00-\\u9fa5]+',op.xpath("./td[13]/text()")[0])[0]
+            except Exception:
+                col14=""
+            data_list.append(col14)
+    except Exception as e:
+        print(e)
+    return data_list
+
+#获取工单页面第14列"告警清除时间”数据
 def get_alarm(html_str):
     data_list = []
     try:
@@ -123,24 +141,28 @@ def get_pagenum(html_str):
         print("获取页数错误")
         
     return num
+    
+
+#获取网络故障3.0待办工单页面工单列表中第8列数据
+def get_processing_stage(html_str):
+    data_list = []
+    try:
+        option = html_str.xpath('//*[@id="app"]/section/section/main/div[1]/div[2]/div/div/div[2]/div/div[3]/table/tbody/tr')
+
+        for op in option:
+            try:
+                col8 = re.findall('[\\u4e00-\\u9fa5]+',op.xpath("./td[8]/div/text()")[0])[0]               
+
+            except Exception as e:        
+                print(e)
+                col8 = ""
+                
+            data_list.append(col8)
+            
+    except Exception as e:
+        print(e)
         
-
-##def get_pagenum(html_str):
-##   
-##    try:
-##        option = html_str.xpath('/html/body/div[4]/div/div/span[2]/a')
-##
-##        #在第一页的时候，“第一页”和“前一页”不是链接，减去“下一页”和“最后一页”两个链接，然后加上第一页，故总链接数减1就是总页数
-##        num = len(option)-1
-##
-##        #只有一页工单时，无a标签，故len(option)的结果为0
-##        if num == -1:
-##            num = 1
-##    except Exception as e:
-##        print(e)               
-##    return num
-
-
+    return data_list
             
             
 
