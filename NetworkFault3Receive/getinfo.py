@@ -25,7 +25,7 @@ def get_processing_stage(html_str):
 
         for op in option:
             try:
-                col8 = re.findall('[\\u4e00-\\u9fa5]+',op.xpath("./td[8]/div/text()")[0])[0]               
+                col8 = re.findall('[\\u4e00-\\u9fa5]+',op.xpath("./td[9]/div/text()")[0])[0]               
 
             except Exception as e:        
                 print(e)
