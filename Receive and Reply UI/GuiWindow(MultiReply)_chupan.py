@@ -4,8 +4,6 @@ import threading
 import sys
 import os
 import time
-import ctypes
-import pyautogui
 
 #wx.Frame是父类，定义子类CreatWindow
 class CreatWindow(wx.Frame):
