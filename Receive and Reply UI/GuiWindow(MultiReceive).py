@@ -1,5 +1,5 @@
 import wx
-from FunctionMulti_NoNumberOfPages import *
+from FunctionReceiveMulti import *
 import threading
 import sys
 import os
