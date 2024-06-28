@@ -490,7 +490,7 @@ def reply_gongdan(username,password,frequence,district,mode_type):
                                 except Exception:
                                     #回复结构为是否现场处理
                                     reply_select(driver,'//*[@id="isDisposal"]','否')
-##                                driver.find_element(By.XPATH,'//*[@id="remark"]').send_keys("市电停电")
+                                    driver.find_element(By.XPATH,'//*[@id="remark"]').send_keys("市电停电")
 
                                 try:
                                     #选择子告警手动清除时间为当前时间
