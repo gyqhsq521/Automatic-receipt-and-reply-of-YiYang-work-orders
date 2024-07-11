@@ -376,7 +376,7 @@ def reply_gongdan(driver,frequence):
                 #确认回单前当前时间
                 c_time = datetime.now().replace(microsecond=0)
 
-                if data_list_name[i-1] != ''and data_list_personnel[i-1] != '总部自动派单' and data_list_personnel[i-1] != '省分自动派单':
+                if data_list_name[i-1] != '':
                 
                     #回复超过派单时间1个小时的工单
                     if (c_time - data_list_time[i-1]).total_seconds() >= 3600.0:        
