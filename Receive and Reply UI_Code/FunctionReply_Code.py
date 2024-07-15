@@ -305,27 +305,23 @@ def reply_gongdan(driver,frequence):
                         
                         #故障预判
                         fault_pre(driver)
-                        
+
                     except Exception:
-                        try:                          
+                        try:
                             #如果不是故障预判页面，有可能是阶段反馈页面
                             stage_receive(driver)
 
                             #再次打开工单页面    
                             driver.get(f"http://10.93.19.175:8091/wyeoms/sheet/centralfaultprocess/{data_list_url[h-1]}")
-                            
+
                             #故障预判
                             fault_pre(driver)
-                            continue
-                            
                         except Exception:
-                            pass
-                        
-                        #关闭标签页
-                        driver.close()   
-                        #切回当前标签页，使当前标签页作为可操作对象
-                        driver.switch_to.window(driver.window_handles[-1])
-                        
+                            #关闭标签页
+                            driver.close()   
+                            #切回当前标签页，使当前标签页作为可操作对象
+                            driver.switch_to.window(driver.window_handles[-1])                        
+                           
                 elif h == order_num:
                     driver.switch_to.window(driver.window_handles[-1])
 
