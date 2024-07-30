@@ -87,9 +87,11 @@ class CreatWindow(wx.Frame):
 
         #如果点击了“确定”
         if r.ShowModal() == wx.ID_YES:
-            os.system('taskkill /F /IM geckodriver.exe')
-            os.system('taskkill /F /IM firefox.exe')
-            sys.exit()
+            try:
+                driver.quit()
+                sys.exit()
+            except:
+                sys.exit()
 
               
     #点击开始按钮后的事件
@@ -100,8 +102,11 @@ class CreatWindow(wx.Frame):
             f = self.Select_1.GetValue()
             #获取后台清除频率
 ##            fb = self.Select_2.GetValue()
+            
+            global driver
             driver = webdriver.Firefox()
-            driver.get("http://10.93.19.175:8091/wyeoms/")            
+            driver.get("http://10.93.19.175:8091/wyeoms/")
+            
             s = wx.MessageDialog(None,"请登陆至陕西联通综合调度系统首页后，再点击“是”开始程序运行","提示",wx.YES_NO|wx.ICON_INFORMATION)                
             if s.ShowModal() == wx.ID_YES:                
                 t(driver,f)               
@@ -110,10 +115,8 @@ class CreatWindow(wx.Frame):
                 self.Select_1.Disable()            
 
             else:
-                os.system('taskkill /F /IM firefox.exe')
-                os.system('taskkill /F /IM geckodriver.exe')   
+                driver.quit()    
 
-            
         except Exception as e:
             print(e)
             # 语法是(self, 内容, 标题, ID)
@@ -125,11 +128,12 @@ class CreatWindow(wx.Frame):
 
     #停止接收工单
     def Stop_Recieve_WO(self,event):
-        #清除后台残留进程
-        os.system('taskkill /F /IM firefox.exe')
-        os.system('taskkill /F /IM geckodriver.exe')
-        sys.exit()
-        
+        try:
+            #清除后台残留进程
+            driver.quit()
+            sys.exit()
+        except:
+            sys.exit()
         
 if __name__ == '__main__':
     app = wx.App(False)
