@@ -141,7 +141,18 @@ def get_pagenum(html_str):
         print("获取页数错误")
         
     return num
-    
+
+#获取负责人姓名
+def get_name(html_str):
+    try:
+        #获取负责人姓名
+        option = html_str.xpath('/html/body/div[1]/div[2]/div/div[1]/div/a[1]')
+        name = re.findall(',(.*)',option[0].xpath("./text()")[0])[0]
+    except Exception:
+        name = ""
+        print("获取负责人姓名错误")
+        
+    return name
 
 #获取网络故障3.0待办工单页面工单列表中第8列数据
 def get_processing_stage(html_str):
@@ -163,7 +174,8 @@ def get_processing_stage(html_str):
         print(e)
         
     return data_list
-            
+
+
             
 
 

@@ -30,7 +30,7 @@ def Open_Page(driver,frequence,iframe,count,start_time,e3):
         WebDriverWait(driver,2,0.5).until(EC.presence_of_element_located((By.XPATH,'/html/body/div[4]/div/div/table/tbody/tr[1]/td[3]')))
     except Exception:
         count += 1    
-        print(f"{datetime.now().replace(microsecond=0)}：第{count}次接单，用时{(datetime.now() - start_time).seconds}秒，该账号暂时没有工单")              
+        print(f"{datetime.now().replace(microsecond=0)} {name}：第{count}次接单，用时{(datetime.now() - start_time).seconds}秒，该账号暂时没有工单")              
         e3 += 1
         time.sleep(int(frequence)*60)
     return e3
@@ -40,13 +40,17 @@ def Recieve_gongdan(driver,frequence):
     count = 0
     #页面等待加载（显示等待（有条件等待））直到新页面的iframe出现,并将iframe作为可操作对象
     iframe=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,'//*[@id="mainFrame"]')))
+
+    #获取负责人姓名
+    name = get_name(get_html_str(driver.page_source))
+    
     driver.switch_to.frame(iframe)
 
     #等待“陕西联通集中故障处理流程”元素出现，并双击
     directory_sxlt=WebDriverWait(driver,10,0.5).until(EC.presence_of_element_located((By.XPATH,'/html/body/div[2]/div[2]/div/div/ul/li/ul/li[1]/div/a/span')))
     ActionChains(driver).double_click(directory_sxlt).perform()
 
-    while True:
+    while True:        
         #用来确认当前账号是否有工单的信号值
         e3 = 0
         try:
@@ -59,7 +63,7 @@ def Recieve_gongdan(driver,frequence):
                     driver.switch_to.default_content()
                     continue                    
             except Exception as e4:
-                print(f"{datetime.now().replace(microsecond=0)}：错误4",e4)
+                print(f"{datetime.now().replace(microsecond=0)} {name}：错误4",e4)
                 #将driver切回主页面(iframe根目录)
                 driver.switch_to.default_content()
                 continue
@@ -154,10 +158,10 @@ def Recieve_gongdan(driver,frequence):
 
             end_time = datetime.now()
             count += 1
-            print(f"{datetime.now().replace(microsecond=0)}：第{count}次接单，用时{(end_time - start_time).seconds}秒,本次共有{j}个待接工单")
+            print(f"{datetime.now().replace(microsecond=0)} {name}：第{count}次接单，用时{(end_time - start_time).seconds}秒,本次共有{j}个待接工单")
             time.sleep(int(frequence)*60)
         except Exception as e1:
-            print(f"{datetime.now().replace(microsecond=0)}：错误1：",e1)
+            print(f"{datetime.now().replace(microsecond=0)} {name}：错误1：",e1)
             #将driver切回主页面(iframe根目录)
             driver.switch_to.default_content()
 

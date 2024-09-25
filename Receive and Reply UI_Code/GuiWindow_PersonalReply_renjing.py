@@ -108,8 +108,14 @@ class CreatWindow(wx.Frame):
             driver.get("http://10.93.19.175:8091/wyeoms/")
             
             s = wx.MessageDialog(None,"请登陆至陕西联通综合调度系统首页后，再点击“是”开始程序运行","提示",wx.YES_NO|wx.ICON_INFORMATION)                
-            if s.ShowModal() == wx.ID_YES:                
-                t(driver,f)               
+            if s.ShowModal() == wx.ID_YES:
+                #设置浏览器窗口位置
+                z = driver.get_window_position()
+                x,y = z['x'],z['y']
+                driver.set_window_position(x + wx.ScreenDC().GetSize()[0],y)
+                
+                t(driver,f)
+                
                 #禁用开始按钮、下拉菜单
                 self.Button_Start.Disable()
                 self.Select_1.Disable()            
