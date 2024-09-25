@@ -252,7 +252,7 @@ def reply_gongdan(driver,frequence):
             start_time = datetime.now()
             try:
                 #Open_Page函数执行打开工单页面操作，并将函数返回结果赋值给e3
-                e3 = Open_Page(driver,frequence,iframe,count,start_time,e3)
+                e3 = Open_Page(driver,frequence,iframe,count,start_time,e3,name)
                 if e3 == 1:
                     #将driver切回主页面(iframe根目录)
                     driver.switch_to.default_content()

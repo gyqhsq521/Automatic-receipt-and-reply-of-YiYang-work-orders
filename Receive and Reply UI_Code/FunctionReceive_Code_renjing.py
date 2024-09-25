@@ -12,7 +12,7 @@ import os
 from selenium.webdriver.firefox.options import Options
 
 
-def Open_Page(driver,frequence,iframe,count,start_time,e3):
+def Open_Page(driver,frequence,iframe,count,start_time,e3,name):
     try:
         driver.switch_to.frame(iframe)
     except Exception:
@@ -30,7 +30,7 @@ def Open_Page(driver,frequence,iframe,count,start_time,e3):
         WebDriverWait(driver,2,0.5).until(EC.presence_of_element_located((By.XPATH,'/html/body/div[4]/div/div/table/tbody/tr[1]/td[3]')))
     except Exception:
         count += 1    
-        print(f"{datetime.now().replace(microsecond=0)} {name}：第{count}次接单，用时{(datetime.now() - start_time).seconds}秒，该账号暂时没有工单")              
+        print(f"{datetime.now().replace(microsecond=0)} {name}：用时{(datetime.now() - start_time).seconds}秒，该账号暂时没有工单")              
         e3 += 1
         time.sleep(int(frequence)*60)
     return e3
@@ -58,7 +58,7 @@ def Recieve_gongdan(driver,frequence):
             start_time = datetime.now()             
             try:                   
                 #Open_Page函数执行打开工单页面操作，并将函数返回结果赋值给e3
-                e3 = Open_Page(driver,frequence,iframe,count,start_time,e3)
+                e3 = Open_Page(driver,frequence,iframe,count,start_time,e3,name)
                 if e3 == 1:
                     #将driver切回主页面(iframe根目录)
                     driver.switch_to.default_content()
