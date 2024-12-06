@@ -168,11 +168,15 @@ def reply_subalert(driver):
 
     #点击保存
     time.sleep(2)
-    save = driver.find_element(By.XPATH,'/html/body/div[4]/div/div/div[1]/input')
+    save = driver.find_element(By.XPATH,'//*[@id="saveHandClean"]')
     save.click()
+
+    #手工清除时间是否为空选择为“否”
+    reply_select(driver,'//*[@id="alarm_handClean_timeIsEmpty"]','否')
   
     #将driver切回主页面，下一步操作主页面上的元素
     driver.switch_to.default_content()
+        
 
 #提交回复工单
 def reply_submit(driver):
