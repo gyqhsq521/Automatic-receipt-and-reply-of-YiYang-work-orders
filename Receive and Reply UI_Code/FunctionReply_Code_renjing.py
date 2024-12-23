@@ -96,6 +96,10 @@ def reply_order(driver,data_list_url,i,Type):
         
     reply_select(driver,'//*[@id="fault_reason_one"]',Type)
     reply_select(driver,'//*[@id="fault_reason_two"]','供电故障停电')
+    try:
+        reply_select(driver,'//*[@id="linkFaultCause"]','灾害损毁')
+    except:
+        pass
     reply_select(driver,'//*[@id="deal_measure"]','自动恢复')
     reply_select(driver,'//*[@id="is_final_way"]','是')
 
@@ -361,7 +365,7 @@ def reply_gongdan(driver,frequence):
             j = 0
 
             #无线网工单的故障原因一级分类回复选项
-            typeA = '配套'
+            typeA = '其他类'
 
             #传送网工单的故障原因一级分类回复选项
             typeB = '线路故障'
