@@ -92,7 +92,8 @@ def reply_order(driver,data_list_url,i,Type):
     try:
         reply_select(driver,'//*[@id="fault_deal_result"]','已解决')
     except Exception:
-        reply_select(driver,'//*[@id="fault_deal_result"]','无需解决')
+##        reply_select(driver,'//*[@id="fault_deal_result"]','无需解决')
+        pass
         
     reply_select(driver,'//*[@id="fault_reason_one"]',Type)
     reply_select(driver,'//*[@id="fault_reason_two"]','供电故障停电')
@@ -391,7 +392,6 @@ def reply_gongdan(driver,frequence):
                     try:
                         #回复无线网工单
                         if data_list_type[i-1] == '无线网':
-                            print(data_list_type[i-1])
                             j += 1
 
                             #开始回复工单

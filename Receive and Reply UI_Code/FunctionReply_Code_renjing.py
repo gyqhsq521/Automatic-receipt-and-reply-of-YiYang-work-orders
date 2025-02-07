@@ -92,8 +92,8 @@ def reply_order(driver,data_list_url,i,Type):
     try:
         reply_select(driver,'//*[@id="fault_deal_result"]','已解决')
     except Exception:
-        reply_select(driver,'//*[@id="fault_deal_result"]','无需解决')
-        
+##        reply_select(driver,'//*[@id="fault_deal_result"]','无需解决')
+        pass
     reply_select(driver,'//*[@id="fault_reason_one"]',Type)
     reply_select(driver,'//*[@id="fault_reason_two"]','供电故障停电')
     try:
