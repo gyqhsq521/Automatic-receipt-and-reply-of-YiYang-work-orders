@@ -382,130 +382,131 @@ def reply_gongdan(driver,frequence):
             #回复可回复的工单               
             for i in range(1,current_length+1):
                 #确认回单前当前时间
-                c_time = datetime.now().replace(microsecond=0)
-
-                if data_list_name[i-1] != '':
+##                c_time = datetime.now().replace(microsecond=0)
+                if data_list_name[i-1] != '' and data_list_alarm[i-1] == '有':
                 
                     #回复超过派单时间1个小时的工单
-                    if (c_time - data_list_time[i-1]).total_seconds() >= 3600.0:        
-                        try:
-                            #回复无线网工单
-                            if data_list_type[i-1] == '无线网':
-                                j += 1
+##                    if (c_time - data_list_time[i-1]).total_seconds() >= 3600.0:
 
-                                #开始回复工单
-                                reply_order(driver,data_list_url,i,typeA)
+                    try:
+                        #回复无线网工单
+                        if data_list_type[i-1] == '无线网':
+                            print(data_list_type[i-1])
+                            j += 1
 
-                                reply_select(driver,'//*[@id="maintenanceSubject"]','联通')
-                                reply_select(driver,'//*[@id="mobileFaultDutyId"]','联通')
+                            #开始回复工单
+                            reply_order(driver,data_list_url,i,typeA)
 
-                                try:
-                                    #选择子告警手动清除时间为当前时间
-                                    reply_subalert(driver)
-                                except Exception:
-                                    pass   
+                            reply_select(driver,'//*[@id="maintenanceSubject"]','联通')
+                            reply_select(driver,'//*[@id="mobileFaultDutyId"]','联通')
 
-                                #将driver切回主页面，下一步操作主页面上的元素
-                                driver.switch_to.default_content()
-                                
-                                #提交并等待完成
-                                reply_submit(driver)
+                            try:
+                                #选择子告警手动清除时间为当前时间
+                                reply_subalert(driver)
+                            except Exception:
+                                pass   
 
-                            #回复传送网工单
-                            if data_list_type[i-1] == '传输':
-                                j += 1
-
-                                #开始回复工单
-                                reply_order(driver,data_list_url,i,typeB)
-
-                                reply_select(driver,'//*[@id="maintenanceSubject"]','联通')                    
-                                reply_select(driver,'//*[@id="transLineLevel"]','本地')
-                                reply_select(driver,'//*[@id="faultStatus"]','处理结束')
-                                reply_select(driver,'//*[@id="faultCause"]','其他原因')
-
-                                try:
-                                    #选择子告警手动清除时间为当前时间
-                                    reply_subalert(driver)
-                                except Exception:
-                                    pass
-
-                                #将driver切回主页面，下一步操作主页面上的元素
-                                driver.switch_to.default_content()
-                                
-                                #提交并等待完成
-                                reply_submit(driver)
+                            #将driver切回主页面，下一步操作主页面上的元素
+                            driver.switch_to.default_content()
                             
-                            #回复接入网工单
-                            if data_list_type[i-1] == '接入网':
-                                j += 1
+                            #提交并等待完成
+                            reply_submit(driver)
 
+                        #回复传送网工单
+                        if data_list_type[i-1] == '传输':
+                            j += 1
+
+                            #开始回复工单
+                            reply_order(driver,data_list_url,i,typeB)
+
+                            reply_select(driver,'//*[@id="maintenanceSubject"]','联通')                    
+                            reply_select(driver,'//*[@id="transLineLevel"]','本地')
+                            reply_select(driver,'//*[@id="faultStatus"]','处理结束')
+                            reply_select(driver,'//*[@id="faultCause"]','其他原因')
+
+                            try:
+                                #选择子告警手动清除时间为当前时间
+                                reply_subalert(driver)
+                            except Exception:
+                                pass
+
+                            #将driver切回主页面，下一步操作主页面上的元素
+                            driver.switch_to.default_content()
+                            
+                            #提交并等待完成
+                            reply_submit(driver)
+                        
+                        #回复接入网工单
+                        if data_list_type[i-1] == '接入网':
+                            j += 1
+
+                            #开始回复工单
+                            reply_order(driver,data_list_url,i,typeC)
+                            reply_select(driver,'//*[@id="faultCause"]','设备温度超过门限')
+                            
+                            try:
+                                #选择子告警手动清除时间为当前时间
+                                reply_subalert(driver)
+                            except Exception:
+                                pass
+
+                            #将driver切回主页面，下一步操作主页面上的元素
+                            driver.switch_to.default_content()
+                            
+                            #提交并等待完成
+                            reply_submit(driver)
+
+                        #回复互联网工单
+                        if data_list_type[i-1] == '互联网':
+                            j += 1
+
+                            #开始回复工单
+                            reply_order(driver,data_list_url,i,typeD)
+                            reply_select(driver,'//*[@id="faultCause"]','供电系统故障')
+                            
+                            try:
+                                #选择子告警手动清除时间为当前时间
+                                reply_subalert(driver)
+                            except Exception:
+                                pass
+
+                            #将driver切回主页面，下一步操作主页面上的元素
+                            driver.switch_to.default_content()
+                            
+                            #提交并等待完成
+                            reply_submit(driver)
+
+                        #回复动环网工单
+                        if data_list_type[i-1] == '动环网':
+                            j += 1
+
+                            try:
                                 #开始回复工单
-                                reply_order(driver,data_list_url,i,typeC)
-                                reply_select(driver,'//*[@id="faultCause"]','设备温度超过门限')
-                                
-                                try:
-                                    #选择子告警手动清除时间为当前时间
-                                    reply_subalert(driver)
-                                except Exception:
-                                    pass
+                                reply_order(driver,data_list_url,i,typeE)
+                                reply_select(driver,'//*[@id="faultCause"]','模块故障')
+                            except Exception:
+                                #回复结构为是否现场处理
+                                reply_select(driver,'//*[@id="isDisposal"]','否')
+                                driver.find_element(By.XPATH,'//*[@id="remark"]').send_keys("市电停电")
 
-                                #将driver切回主页面，下一步操作主页面上的元素
-                                driver.switch_to.default_content()
-                                
-                                #提交并等待完成
-                                reply_submit(driver)
+                            try:
+                                #选择子告警手动清除时间为当前时间
+                                reply_subalert(driver)
+                            except Exception:
+                                pass
 
-                            #回复互联网工单
-                            if data_list_type[i-1] == '互联网':
-                                j += 1
-
-                                #开始回复工单
-                                reply_order(driver,data_list_url,i,typeD)
-                                reply_select(driver,'//*[@id="faultCause"]','供电系统故障')
-                                
-                                try:
-                                    #选择子告警手动清除时间为当前时间
-                                    reply_subalert(driver)
-                                except Exception:
-                                    pass
-
-                                #将driver切回主页面，下一步操作主页面上的元素
-                                driver.switch_to.default_content()
-                                
-                                #提交并等待完成
-                                reply_submit(driver)
-
-                            #回复动环网工单
-                            if data_list_type[i-1] == '动环网':
-                                j += 1
-
-                                try:
-                                    #开始回复工单
-                                    reply_order(driver,data_list_url,i,typeE)
-                                    reply_select(driver,'//*[@id="faultCause"]','模块故障')
-                                except Exception:
-                                    #回复结构为是否现场处理
-                                    reply_select(driver,'//*[@id="isDisposal"]','否')
-                                    driver.find_element(By.XPATH,'//*[@id="remark"]').send_keys("市电停电")
-
-                                try:
-                                    #选择子告警手动清除时间为当前时间
-                                    reply_subalert(driver)
-                                except Exception:
-                                    pass
-
-                                #将driver切回主页面，下一步操作主页面上的元素
-                                driver.switch_to.default_content()
-                                
-                                #提交并等待完成
-                                reply_submit(driver)
-                        except Exception as eA:
-                            #关闭标签页
-                            driver.close()
-                            ur += 1
-          
-                            #切回当前标签页，使当前标签页作为可操作对象
-                            driver.switch_to.window(driver.window_handles[-1])
+                            #将driver切回主页面，下一步操作主页面上的元素
+                            driver.switch_to.default_content()
+                            
+                            #提交并等待完成
+                            reply_submit(driver)
+                    except Exception as eA:
+                        #关闭标签页
+                        driver.close()
+                        ur += 1
+      
+                        #切回当前标签页，使当前标签页作为可操作对象
+                        driver.switch_to.window(driver.window_handles[-1])
 
             #将driver切回主页面(iframe根目录)
             driver.switch_to.default_content()
